@@ -10,7 +10,6 @@
 # == Examples
 #
 # include buildbot
-# buildbot::master { 'mymaster': }
 #
 # == Authors
 #
