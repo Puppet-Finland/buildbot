@@ -28,6 +28,9 @@ define buildbot::master
 )
 {
 
+    # Enable buildmaster service
+    include buildbot::service::master
+
     # Run buildbot's create-master command
     exec { "$buildbot-create-master-$title":
         command => "buildbot create-master -r /var/lib/buildbot/masters/$title",
