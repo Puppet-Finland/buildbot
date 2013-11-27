@@ -41,7 +41,7 @@ define buildbot::master
         creates => "${::buildbot::params::buildmaster_basedir}/${title}",
         user => "${::buildbot::params::buildbot_user}",
         path => [ '/usr/bin' ],
-        require => Class['buildbot::install'],
+        require => Class['buildbot::install::master'],
     }
 
     if $osfamily == 'Debian' {
