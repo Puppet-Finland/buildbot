@@ -5,9 +5,9 @@
 #
 class buildbot::service::master {
 
-    service { 'buildmaster':
-        name => 'buildmaster',
+    service { 'buildbot-master':
+        name => "${::buildbot::params::buildmaster_service_name",
         enable => true,
-        require => Class['buildbot::install'],
+        require => Class['buildbot::install::master'],
     }    
 }
