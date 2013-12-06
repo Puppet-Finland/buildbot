@@ -10,15 +10,26 @@
 #   value.
 # [*buildmaster_port*]
 #   The port the buildmaster server is listening on. Defaults to 9989.
-# [*buildslave_name*]
-#   The name of the buildslave. Used when connecting to the buildmaster as well 
-#   for distinguish it from other buildslaves running on the same computers.
+# [*buildslave_remote_name*]
+#   The name of the buildslave. Used for authentication when connecting to the 
+#   buildmaster.
 # [*buildslave_password*]
 #   The password the buildslave uses when connecting to the master.
+# [*buildslave_local_name*]
+#   The name of the buildslave on the local computer. Used to distinguish it 
+#   from other local buildslave instances, which might contact other 
+#   buildmasters.
+# [*buildbot_user*]
+#   Local user the buildbot runs as. Defaults 
+#   ${::buildbot::params::buildbot_user}
 # [*email*]
 #   Email address of this buildslave's administrator shown in this buildslave's 
 #   information. Service notifications (e.g. from monit) will also be sent to 
 #   this address. Defaults to $::serveradmin.
+# [*index*]
+#   The index number for this slave. This is used in Debian's init scripts and 
+#   defaults file to distinguish between settings of different slaves. Defaults 
+#   to 0.
 #
 # == Examples
 #
@@ -38,24 +49,45 @@ define buildbot::slave
 (
     $buildmaster_address,
     $buildmaster_port = 9989,
-    $buildslave_name,
+    $buildslave_remote_name,
     $buildslave_password,
-    $email = $::serveradmin
+    $buildslave_local_name,
+    $buildbot_user = '',
+    $email = $::serveradmin,
+    $index = 0
 )
 {
 
 # Rationale for this is explained in init.pp of the sshd module
 if hiera('manage_buildbot_slave', 'true') != 'false' {
 
+    include buildbot::params
+
     include buildbot::install::slave
     include buildbot::config::common
+
+    # Check if buildbot should run as a custom user
+    if $buildbot_user == '' {
+        $run_as_user = "${::buildbot::params::buildbot_user}"
+    } else {
+        $run_as_user = $buildbot_user
+    }
 
     buildbot::config::slave { "${buildslave_name}-config":
         buildmaster_address => $buildmaster_address,
         buildmaster_port => $buildmaster_port,
-        buildslave_name => $buildslave_name,
+        buildslave_remote_name => $buildslave_remote_name,
         buildslave_password => $buildslave_password,
+        buildslave_local_name => $buildslave_local_name,
+        run_as_user => $run_as_user,
         email => $email,
+    }
+
+    if $osfamily == 'Debian' {
+        buildbot::config::slave::debian { "${buildslave_local_name}":
+            index => $index,
+            run_as_user => $run_as_user,
+        }
     }
 }
 }

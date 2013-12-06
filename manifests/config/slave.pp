@@ -7,14 +7,16 @@ define buildbot::config::slave
 (
     $buildmaster_address,
     $buildmaster_port,
-    $buildslave_name,
+    $buildslave_remote_name,
     $buildslave_password,
+    $buildslave_local_name,
+    $run_as_user,
     $email
 )
 {
     include buildbot::params
 
-    $buildslave_dir = "${::buildbot::params::buildslave_basedir}/${buildslave_name}"
+    $buildslave_dir = "${::buildbot::params::buildslave_basedir}/${buildslave_local_name}"
 
     file { 'buildbot-buildslave_basedir':
         name => "${::buildbot::params::buildslave_basedir}",
@@ -26,9 +28,9 @@ define buildbot::config::slave
     }
 
     exec { 'buildbot-create-slave':
-        command => "${::buildbot::params::buildslave_executable} create-slave ${buildslave_dir} ${buildmaster_address}:${buildmaster_port} ${buildslave_name} ${buildslave_password}",
+        command => "${::buildbot::params::buildslave_executable} create-slave ${buildslave_dir} ${buildmaster_address}:${buildmaster_port} ${buildslave_remote_name} ${buildslave_password}",
         creates => "${buildslave_dir}",
         require => File['buildbot-buildslave_basedir'],
-        user => root,
+        user => $run_as_user,
     } 
 }
