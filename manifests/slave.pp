@@ -84,10 +84,19 @@ if hiera('manage_buildbot_slave', 'true') != 'false' {
     }
 
     if $osfamily == 'Debian' {
+
+        # Enable buildbot on boot
+        include buildbot::service::slave::debian
+
         buildbot::config::slave::debian { "${buildslave_local_name}":
             index => $index,
             run_as_user => $run_as_user,
         }
     }
+
+    if tagged('monit') {
+        buildbot::monit::slave { "${buildslave_local_name}": }
+    }
+
 }
 }

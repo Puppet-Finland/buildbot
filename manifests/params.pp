@@ -21,7 +21,6 @@ class buildbot::params {
             $buildslave_service_name = 'buildbot-slave'
             $buildbot_user = 'root'
             $buildbot_group = 'root'
-            $admingroup = 'root'
         }
         'Debian': {
             $buildmaster_package_name = 'buildbot'
@@ -32,7 +31,6 @@ class buildbot::params {
             $buildslave_service_name = 'buildslave'
             $buildbot_user = 'buildbot'
             $buildbot_group = 'buildbot'
-            $admingroup = 'root'
         }
         default: {
             $buildmaster_package_name = 'buildbot'
@@ -43,7 +41,6 @@ class buildbot::params {
             $buildslave_service_name = 'buildslave'
             $buildbot_user = 'buildbot'
             $buildbot_group = 'buildbot'
-            $admingroup = 'root'
         }
     }
 }
