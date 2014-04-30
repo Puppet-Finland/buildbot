@@ -18,6 +18,7 @@ define buildbot::config::slave::debian
         changes => "set SLAVE_ENABLED\[$index\] 1",
         lens => 'Shellvars.lns',
         incl => "$default_file",
+        require => Class['buildbot::install::slave'],
     }
 
     augeas { "buildbot-${title}-${index}-SLAVE_NAME":
@@ -25,6 +26,7 @@ define buildbot::config::slave::debian
         changes => "set SLAVE_NAME\[$index\] $title",
         lens => 'Shellvars.lns',
         incl => "$default_file",
+        require => Class['buildbot::install::slave'],
     }
 
     augeas { "buildbot-${title}-${index}-SLAVE_USER":
@@ -32,6 +34,7 @@ define buildbot::config::slave::debian
         changes => "set SLAVE_USER\[$index\] $run_as_user",
         lens => 'Shellvars.lns',
         incl => "$default_file",
+        require => Class['buildbot::install::slave'],
     }
 
     augeas { "buildbot-${title}-${index}-SLAVE_BASEDIR":
@@ -39,6 +42,7 @@ define buildbot::config::slave::debian
         changes => "set SLAVE_BASEDIR\[$index\] ${::buildbot::params::buildslave_basedir}/$title",
         lens => 'Shellvars.lns',
         incl => "$default_file",
+        require => Class['buildbot::install::slave'],
     }
 
     augeas { "buildbot-${title}-${index}-SLAVE_OPTIONS":
@@ -46,6 +50,7 @@ define buildbot::config::slave::debian
         changes => "set SLAVE_OPTIONS\[$index\] \"\"",
         lens => 'Shellvars.lns',
         incl => "$default_file",
+        require => Class['buildbot::install::slave'],
     }
 
     augeas { "buildbot-${title}-${index}-SLAVE_PREFIXCMD":
@@ -53,5 +58,6 @@ define buildbot::config::slave::debian
         changes => "set SLAVE_PREFIXCMD\[$index\] \"\"",
         lens => 'Shellvars.lns',
         incl => "$default_file",
+        require => Class['buildbot::install::slave'],
     }
 }
