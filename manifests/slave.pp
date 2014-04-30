@@ -22,6 +22,9 @@
 # [*buildbot_user*]
 #   Local user the buildbot runs as. Defaults 
 #   ${::buildbot::params::buildbot_user}
+# [*admin*]
+#   The real name of the administrator of this buildslave, which will be shown 
+#   in buildslave information. Defaults to $::serveradmin.
 # [*email*]
 #   Email address of this buildslave's administrator shown in this buildslave's 
 #   information. Service notifications (e.g. from monit) will also be sent to 
@@ -53,6 +56,7 @@ define buildbot::slave
     $buildslave_password,
     $buildslave_local_name,
     $buildbot_user = '',
+    $admin = $::serveradmin,
     $email = $::serveradmin,
     $index = 0
 )
@@ -73,13 +77,14 @@ if hiera('manage_buildbot_slave', 'true') != 'false' {
         $run_as_user = $buildbot_user
     }
 
-    buildbot::config::slave { "${buildslave_name}-config":
+    buildbot::config::slave { "${buildslave_local_name}-config":
         buildmaster_address => $buildmaster_address,
         buildmaster_port => $buildmaster_port,
         buildslave_remote_name => $buildslave_remote_name,
         buildslave_password => $buildslave_password,
         buildslave_local_name => $buildslave_local_name,
         run_as_user => $run_as_user,
+        admin => $admin,
         email => $email,
     }
 
