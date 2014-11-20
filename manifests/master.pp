@@ -19,10 +19,10 @@
 #
 # == Examples
 #
-# include buildbot
-# buildbot::master { 'mymaster':
-#   index => '1',
-# }
+#   include buildbot
+#   buildbot::master { 'mymaster':
+#       index => '1',
+#   }
 #
 define buildbot::master
 (
