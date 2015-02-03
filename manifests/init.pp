@@ -1,9 +1,23 @@
 #
 # == Class: buildbot
 #
-# A dummy class required by Puppet. Use buildbot::master and buildbot::slave to 
-# actually configure buildmasters and buildslaves.
+# Setup buildbot
 #
-class buildbot {
-    # Dummy class
+# == Parameters
+#
+# [*masters*]
+#   A hash of buildbot::master resources to realize.
+# [*slaves*]
+#   A hash of buildbot::slave resources to realize.
+#
+class buildbot
+(
+    $masters = {},
+    $slaves = {}
+)
+{
+    # Create buildmaster and buildslave instances
+    create_resources('buildbot::master', $masters)
+    create_resources('buildbot::slave', $slaves)
+
 }
