@@ -33,14 +33,7 @@ class buildbot::params {
             $buildbot_group = 'buildbot'
         }
         default: {
-            $buildmaster_package_name = 'buildbot'
-            $buildmaster_executable = '/usr/bin/buildbot'
-            $buildmaster_service_name = 'buildmaster'
-            $buildslave_package_name = 'buildbot-slave'
-            $buildslave_executable = '/usr/bin/buildslave'
-            $buildslave_service_name = 'buildslave'
-            $buildbot_user = 'buildbot'
-            $buildbot_group = 'buildbot'
+            fail("Unsupported OS: ${::osfamily}")
         }
     }
 }
