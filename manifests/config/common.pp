@@ -3,15 +3,13 @@
 #
 # Configure things common to buildslaves and buildmasters
 #
-class buildbot::config::common {
-
-    include buildbot::params
+class buildbot::config::common inherits buildbot::params {
 
     file { 'buildbot-basedir':
-        name => "${::buildbot::params::buildbot_basedir}",
         ensure => directory,
-        owner => "${::buildbot::params::buildbot_user}",
-        group => "${::buildbot::params::buildbot_group}",
-        mode => 755,
+        name   => $::buildbot::params::buildbot_basedir,
+        owner  => $::buildbot::params::buildbot_user,
+        group  => $::buildbot::params::buildbot_group,
+        mode   => '0755',
     }
 }

@@ -3,12 +3,10 @@
 #
 # Install a buildslave
 #
-class buildbot::install::slave {
-
-    include buildbot::params
+class buildbot::install::slave inherits buildbot::params {
 
     package { 'buildbot-buildbot':
-        name => "${::buildbot::params::buildslave_package_name}",
         ensure => installed,
+        name   => $::buildbot::params::buildslave_package_name,
     }
 }

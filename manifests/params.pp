@@ -33,7 +33,7 @@ class buildbot::params {
             $buildbot_group = 'buildbot'
         }
         default: {
-            fail("Unsupported OS: ${::osfamily}")
+            fail("Unsupported operating system: ${::osfamily}")
         }
     }
 }

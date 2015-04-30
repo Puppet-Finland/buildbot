@@ -5,6 +5,9 @@
 #
 # == Parameters
 #
+# [*manage*]
+#   Whether to manage buildslaves with Puppet or not. Valid values are 'yes' 
+#   (default) and 'no'.
 # [*buildmaster_address*]
 #   The IP-address of the buildmaster server the slave connects to. No default
 #   value.
@@ -51,56 +54,55 @@
 define buildbot::slave
 (
     $buildmaster_address,
-    $buildmaster_port = 9989,
     $buildslave_remote_name,
     $buildslave_password,
     $buildslave_local_name,
-    $buildbot_user = '',
+    $manage = 'yes',
+    $buildmaster_port = 9989,
+    $buildbot_user = undef,
     $admin = $::serveradmin,
     $email = $::serveradmin,
     $index = 0
 )
 {
 
-# Rationale for this is explained in init.pp of the sshd module
-if hiera('manage_buildbot_slave', 'true') != 'false' {
+if $manage == 'yes' {
 
-    include buildbot::params
-
-    include buildbot::install::slave
-    include buildbot::config::common
+    include ::buildbot::params
+    include ::buildbot::install::slave
+    include ::buildbot::config::common
 
     # Check if buildbot should run as a custom user
-    if $buildbot_user == '' {
-        $run_as_user = "${::buildbot::params::buildbot_user}"
-    } else {
+    if $buildbot_user {
         $run_as_user = $buildbot_user
+    } else {
+        $run_as_user = $::buildbot::params::buildbot_user
     }
 
     buildbot::config::slave { "${buildslave_local_name}-config":
-        buildmaster_address => $buildmaster_address,
-        buildmaster_port => $buildmaster_port,
+        buildmaster_address    => $buildmaster_address,
+        buildmaster_port       => $buildmaster_port,
         buildslave_remote_name => $buildslave_remote_name,
-        buildslave_password => $buildslave_password,
-        buildslave_local_name => $buildslave_local_name,
-        run_as_user => $run_as_user,
-        admin => $admin,
-        email => $email,
+        buildslave_password    => $buildslave_password,
+        buildslave_local_name  => $buildslave_local_name,
+        run_as_user            => $run_as_user,
+        admin                  => $admin,
+        email                  => $email,
     }
 
-    if $osfamily == 'Debian' {
+    if $::osfamily == 'Debian' {
 
         # Enable buildbot on boot
-        include buildbot::service::slave::debian
+        include ::buildbot::service::slave::debian
 
-        buildbot::config::slave::debian { "${buildslave_local_name}":
-            index => $index,
+        buildbot::config::slave::debian { $buildslave_local_name:
+            index       => $index,
             run_as_user => $run_as_user,
         }
     }
 
     if tagged('monit') {
-        buildbot::monit::slave { "${buildslave_local_name}": }
+        buildbot::monit::slave { $buildslave_local_name: }
     }
 
 }

@@ -1,11 +1,14 @@
 {
   "name": "puppetfinland-buildbot",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": "Puppet-Finland team",
   "license": "BSD license",
   "summary": "Setup buildbot masters and slaves",
   "source": "https://github.com/Puppet-Finland/buildbot.git",
   "project_page": "https://github.com/Puppet-Finland/buildbot",
   "dependencies": [
+    { "name": "puppetfinland/monit", "version_requirement": ">= 0.5.0" },
+    { "name": "puppetfinland/packetfilter", "version_requirement": ">= 0.5.0" },
+    { "name": "puppetfinland/os", "version_requirement": ">= 0.5.6" }
   ]
 }

@@ -5,11 +5,11 @@
 # systems that have a single wrapper script used to launches all buildslaves at 
 # once (like Debian).
 #
-class buildbot::service::slave::debian {
+class buildbot::service::slave::debian inherits buildbot::params {
 
     service { 'buildbot-slave':
-        name => "${::buildbot::params::buildslave_service_name}",
-        enable => true,
+        name    => $::buildbot::params::buildslave_service_name,
+        enable  => true,
         require => Class['buildbot::install::slave'],
-    }    
+    }
 }

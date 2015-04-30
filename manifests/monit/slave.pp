@@ -12,16 +12,16 @@
 #
 define buildbot::monit::slave {
 
-    include monit::params
+    include ::monit::params
+    include ::buildbot::params
 
     file { "buildbot-${title}-buildslave.monit":
-        name => "${::monit::params::fragment_dir}/buildslave-${title}.monit",
+        name    => "${::monit::params::fragment_dir}/buildslave-${title}.monit",
         content => template('buildbot/buildslave.monit.erb'),
-        owner => root,
-        group => root,
-        mode => 600,
+        owner   => $::os::params::adminuser,
+        group   => $::os::params::admingroup,
+        mode    => '0600',
         require => Class['monit::config'],
-        notify => Class['monit::service'],
+        notify  => Class['monit::service'],
     }
 }
-

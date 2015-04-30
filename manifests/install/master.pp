@@ -3,12 +3,10 @@
 #
 # Install a buildmaster
 #
-class buildbot::install::master {
-
-    include buildbot::params
+class buildbot::install::master inherits buildbot::params {
 
     package { 'buildbot-buildbot':
-        name => "${::buildbot::params::buildmaster_package_name}",
         ensure => installed,
+        name   => $::buildbot::params::buildmaster_package_name,
     }
 }

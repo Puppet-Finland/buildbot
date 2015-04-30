@@ -9,6 +9,9 @@
 #
 # == Parameters
 #
+# [*manage*]
+#   Whether to manage Buildmasters with Puppet or not. Valid values are 'yes' 
+#   (default) and 'no'.
 # [*title*]
 #   While not strictly a parameter, the resource title is used as a basename for 
 #   the new master's directory. For example, on Debian 'mymaster' will create a 
@@ -26,27 +29,32 @@
 #
 define buildbot::master
 (
-    $index
+    $index,
+    $manage = 'yes'
+
 )
 {
 
-    include buildbot::params
-    include buildbot::install::master
-    include buildbot::config::common
-    include buildbot::service::master
+if $manage == 'yes' {
+
+    include ::buildbot::params
+    include ::buildbot::install::master
+    include ::buildbot::config::common
+    include ::buildbot::service::master
 
     # Run buildbot's create-master command
     exec { "buildbot-create-master-${title}":
         command => "${::buildbot::params::buildmaster_executable} create-master -r ${::buildbot::params::buildmaster_basedir}/${title}",
         creates => "${::buildbot::params::buildmaster_basedir}/${title}",
-        user => "${::buildbot::params::buildbot_user}",
-        path => [ '/usr/bin' ],
+        user    => $::buildbot::params::buildbot_user,
+        path    => [ '/usr/bin' ],
         require => Class['buildbot::install::master'],
     }
 
-    if $osfamily == 'Debian' {
-        buildbot::config::master::debian { "${title}":
+    if $::osfamily == 'Debian' {
+        buildbot::config::master::debian { $title:
             index => $index,
         }
     }
+}
 }
