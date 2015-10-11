@@ -19,6 +19,22 @@
 # [*index*]
 #   The index number for this master. This is used in Debian's init scripts and 
 #   defaults file to distinguish between settings of different masters.
+# [*webui_port*}
+#   Port on which the Buildbot webui listens. Currently only affects iptables/ip6tables rules. Defaults to
+#   8010.
+# [*buildslave_port*]
+#   Port to which buildslaves connect. Currently only affects iptables/ip6tables 
+#   rules. Defaults to 9989.
+# [*webui_allow_address_ipv4*]
+#   IPv4 addresses from which to allow connection to the webui. Use special 
+#   value 'any' to allow connections from any address. Defaults to '127.0.0.1'.
+# [*webui_allow_address_ipv6*]
+#   The same as above but for ipv6. Defaults to '::1'.
+# [*buildslave_allow_address_ipv4*]
+#   The same as above but for ipv4 buildslave connections. Defaults to 
+#   '127.0.0.1'.
+# [*buildslave_allow_address_ipv6*]
+#   The same as above but for ipv6 buildslave connections. Defaults to '::1'.
 #
 # == Examples
 #
@@ -30,8 +46,13 @@
 define buildbot::master
 (
     $index,
-    $manage = 'yes'
-
+    $manage = 'yes',
+    $webui_port = 8010,
+    $buildslave_port = 9989,
+    $webui_allow_address_ipv4 = '127.0.0.1',
+    $webui_allow_address_ipv6 = '::1',
+    $buildslave_allow_address_ipv4 = '127.0.0.1',
+    $buildslave_allow_address_ipv6 = '::1'
 )
 {
 
@@ -54,6 +75,17 @@ if $manage == 'yes' {
     if $::osfamily == 'Debian' {
         buildbot::config::master::debian { $title:
             index => $index,
+        }
+    }
+
+    if tagged('packetfilter') {
+        class { '::buildbot::master::packetfilter':
+            webui_port                    => $webui_port,
+            buildslave_port               => $buildslave_port,
+            webui_allow_address_ipv4      => $webui_allow_address_ipv4,
+            webui_allow_address_ipv6      => $webui_allow_address_ipv6,
+            buildslave_allow_address_ipv4 => $buildslave_allow_address_ipv4,
+            buildslave_allow_address_ipv6 => $buildslave_allow_address_ipv6,
         }
     }
 }
