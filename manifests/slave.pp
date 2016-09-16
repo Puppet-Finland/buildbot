@@ -6,8 +6,8 @@
 # == Parameters
 #
 # [*manage*]
-#   Whether to manage buildslaves with Puppet or not. Valid values are 'yes' 
-#   (default) and 'no'.
+#   Whether to manage buildslaves with Puppet or not. Valid values are true
+#   (default) and false.
 # [*buildmaster_address*]
 #   The IP-address of the buildmaster server the slave connects to. No default
 #   value.
@@ -57,7 +57,7 @@ define buildbot::slave
     $buildslave_remote_name,
     $buildslave_password,
     $buildslave_local_name,
-    $manage = 'yes',
+    $manage = true,
     $buildmaster_port = 9989,
     $buildbot_user = undef,
     $admin = $::serveradmin,
@@ -66,7 +66,7 @@ define buildbot::slave
 )
 {
 
-if $manage == 'yes' {
+if $manage {
 
     include ::buildbot::params
     include ::buildbot::install::slave

@@ -10,8 +10,8 @@
 # == Parameters
 #
 # [*manage*]
-#   Whether to manage Buildmasters with Puppet or not. Valid values are 'yes' 
-#   (default) and 'no'.
+#   Whether to manage Buildmasters with Puppet or not. Valid values are true 
+#   (default) and false.
 # [*title*]
 #   While not strictly a parameter, the resource title is used as a basename for 
 #   the new master's directory. For example, on Debian 'mymaster' will create a 
@@ -46,7 +46,7 @@
 define buildbot::master
 (
     $index,
-    $manage = 'yes',
+    $manage = true,
     $webui_port = 8010,
     $buildslave_port = 9989,
     $webui_allow_address_ipv4 = '127.0.0.1',
@@ -56,7 +56,7 @@ define buildbot::master
 )
 {
 
-if $manage == 'yes' {
+if $manage {
 
     include ::buildbot::params
     include ::buildbot::install::master
