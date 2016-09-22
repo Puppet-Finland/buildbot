@@ -4,6 +4,29 @@ A Puppet module for managing buildbot
 
 # Module usage
 
+Setting up buildslaves is fairly easy using Hiera. First setup some sane 
+defaults (e.g. in common.yaml):
+
+    buildbot::default_buildmaster_address: '10.10.50.50'
+    buildbot::default_email: 'john.doe@domain.com'
+    buildbot::default_admin: 'John Doe'
+
+Then create a buildslave:
+
+    classes:
+        - buildbot
+    
+    buildbot::slaves:
+        myproject:
+            buildslave_remote_name: 'slave-ubuntu-1604-amd64'
+            buildslave_password: 'secret-password'
+            buildslave_local_name: 'myproject'
+            buildbot_user: 'root'
+            index: 1
+
+The index parameter is only needed on Debian/Ubuntu. For further details see 
+these classes and defines:
+
 * [Class: buildbot](manifests/init.pp)
 * [Define: buildbot::master](manifests/master.pp)
 * [Define: buildbot::slave](manifests/slave.pp)
