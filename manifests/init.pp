@@ -5,6 +5,11 @@
 #
 # == Parameters
 #
+# [*default_buildmaster_address*]
+# [*default_buildmaster_port*]
+# [*default_admin*]
+# [*default_email*]
+#   Default settings for ::buildbot::slave instances.
 # [*masters*]
 #   A hash of buildbot::master resources to realize.
 # [*slaves*]
@@ -12,8 +17,12 @@
 #
 class buildbot
 (
-    Hash $masters = {},
-    Hash $slaves = {}
+    Optional[String]  $default_buildmaster_address,
+    Optional[Integer] $default_buildmaster_port = 9989,
+    Optional[String]  $default_admin = $::serveradmin,
+    Optional[String]  $default_email = $::serveradmin,
+    Hash              $masters = {},
+    Hash              $slaves = {}
 )
 {
     # Create buildmaster and buildslave instances

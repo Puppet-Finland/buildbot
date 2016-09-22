@@ -9,10 +9,11 @@
 #   Whether to manage buildslaves with Puppet or not. Valid values are true
 #   (default) and false.
 # [*buildmaster_address*]
-#   The IP-address of the buildmaster server the slave connects to. No default
-#   value.
+#   The IP-address of the buildmaster server the slave connects to. Defaults to 
+#   $::buildbot::default_buildmaster_address.
 # [*buildmaster_port*]
-#   The port the buildmaster server is listening on. Defaults to 9989.
+#   The port the buildmaster server is listening on. Defaults to 
+#   $::buildbot::default_buildmaster_port, which in turn defaults to 9989.
 # [*buildslave_remote_name*]
 #   The name of the buildslave. Used for authentication when connecting to the 
 #   buildmaster.
@@ -27,11 +28,13 @@
 #   ${::buildbot::params::buildbot_user}
 # [*admin*]
 #   The real name of the administrator of this buildslave, which will be shown 
-#   in buildslave information. Defaults to $::serveradmin.
+#   in buildslave information. Defaults to $::buildbot::default_admin, which in
+#   turn defaults to $::serveradmin.
 # [*email*]
 #   Email address of this buildslave's administrator shown in this buildslave's 
 #   information. Service notifications (e.g. from monit) will also be sent to 
-#   this address. Defaults to $::serveradmin.
+#   this address. Defaults to $::buildbot::default_email, which in turn defaults 
+#   to $::serveradmin.
 # [*index*]
 #   The index number for this slave. This is used in Debian's init scripts and 
 #   defaults file to distinguish between settings of different slaves. Defaults 
@@ -53,20 +56,26 @@
 #
 define buildbot::slave
 (
-    $buildmaster_address,
     $buildslave_remote_name,
     $buildslave_password,
     $buildslave_local_name,
     $manage = true,
-    $buildmaster_port = 9989,
+    $buildmaster_address = undef,
+    $buildmaster_port = undef,
     $buildbot_user = undef,
-    $admin = $::serveradmin,
-    $email = $::serveradmin,
+    $admin = undef,
+    $email = undef,
     $index = 0
 )
 {
 
 if $manage {
+
+    # Get default values from the ::buildbot class
+    if $buildmaster_address == undef { $l_buildmaster_address = $::buildbot::default_buildmaster_address } else { $l_buildmaster_address = $buildmaster_address }
+    if $buildmaster_port == undef    { $l_buildmaster_port = $::buildbot::default_buildmaster_port       } else { $l_buildmaster_port = $buildmaster_port }
+    if $admin == undef               { $l_admin = $::buildbot::default_admin                             } else { $l_admin = $admin }
+    if $email == undef               { $l_email = $::buildbot::default_email                             } else { $l_email = $email }
 
     include ::buildbot::params
     include ::buildbot::install::slave
@@ -80,14 +89,14 @@ if $manage {
     }
 
     buildbot::config::slave { "${buildslave_local_name}-config":
-        buildmaster_address    => $buildmaster_address,
-        buildmaster_port       => $buildmaster_port,
+        buildmaster_address    => $l_buildmaster_address,
+        buildmaster_port       => $l_buildmaster_port,
         buildslave_remote_name => $buildslave_remote_name,
         buildslave_password    => $buildslave_password,
         buildslave_local_name  => $buildslave_local_name,
         run_as_user            => $run_as_user,
-        admin                  => $admin,
-        email                  => $email,
+        admin                  => $l_admin,
+        email                  => $l_email,
     }
 
     if $::osfamily == 'Debian' {
