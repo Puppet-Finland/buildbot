@@ -12,8 +12,8 @@
 #
 class buildbot
 (
-    $masters = {},
-    $slaves = {}
+    Hash $masters = {},
+    Hash $slaves = {}
 )
 {
     # Create buildmaster and buildslave instances

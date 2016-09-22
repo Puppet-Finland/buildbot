@@ -5,8 +5,8 @@
 #
 define buildbot::config::slave::debian
 (
-    $index,
-    $run_as_user
+    Integer $index,
+    String  $run_as_user
 )
 {
     include ::buildbot::params

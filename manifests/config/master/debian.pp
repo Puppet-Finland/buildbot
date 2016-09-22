@@ -5,7 +5,7 @@
 #
 define buildbot::config::master::debian
 (
-    $index
+    Integer $index
 )
 {
     include ::buildbot::params

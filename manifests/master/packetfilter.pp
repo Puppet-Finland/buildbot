@@ -5,12 +5,12 @@
 #
 class buildbot::master::packetfilter
 (
-    $webui_port,
-    $buildslave_port,
-    $webui_allow_address_ipv4,
-    $webui_allow_address_ipv6,
-    $buildslave_allow_address_ipv4,
-    $buildslave_allow_address_ipv6
+    Integer $webui_port,
+    Integer $buildslave_port,
+    String  $webui_allow_address_ipv4,
+    String  $webui_allow_address_ipv6,
+    String  $buildslave_allow_address_ipv4,
+    String  $buildslave_allow_address_ipv6
 )
 {
     $webui_source_v4 = $webui_allow_address_ipv4 ? {

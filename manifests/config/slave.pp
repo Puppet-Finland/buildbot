@@ -5,14 +5,14 @@
 #
 define buildbot::config::slave
 (
-    $buildmaster_address,
-    $buildmaster_port,
-    $buildslave_remote_name,
-    $buildslave_password,
-    $buildslave_local_name,
-    $run_as_user,
-    $admin,
-    $email
+    String  $buildmaster_address,
+    Integer $buildmaster_port,
+    String  $buildslave_remote_name,
+    String  $buildslave_password,
+    String  $buildslave_local_name,
+    String  $run_as_user,
+    String  $admin,
+    String  $email
 )
 {
     include ::buildbot::params
