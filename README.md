@@ -47,7 +47,7 @@ This module has been tested on
 
 Fedora 24 does not have a unit file for starting buildslaves, but you can work 
 around that issue by including 
-[PuppetFinland/monit](https://github.com/Puppet-Finland/monit):
+[Puppet-Finland/monit](https://github.com/Puppet-Finland/monit):
 
     classes:
         - monit
