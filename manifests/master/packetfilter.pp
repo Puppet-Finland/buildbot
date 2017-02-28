@@ -37,26 +37,30 @@ class buildbot::master::packetfilter
         action   => 'accept',
     }
 
-    firewall { '016 ipv4 accept buildmaster webui port':
+    @firewall { '016 ipv4 accept buildmaster webui port':
         provider => 'iptables',
         dport    => $webui_port,
         source   => $webui_source_v4,
+        tag      => 'default',
     }
-    firewall { '016 ipv6 accept buildmaster webui port':
+    @firewall { '016 ipv6 accept buildmaster webui port':
         provider => 'ip6tables',
         dport    => $webui_port,
         source   => $webui_source_v6,
+        tag      => 'default',
     }
 
-    firewall { '016 ipv4 accept buildmaster slave port':
+    @firewall { '016 ipv4 accept buildmaster slave port':
         provider => 'iptables',
         dport    => $buildslave_port,
         source   => $buildslave_source_v4,
+        tag      => 'default',
     }
-    firewall { '016 ipv6 accept buildmaster slave port':
+    @firewall { '016 ipv6 accept buildmaster slave port':
         provider => 'ip6tables',
         dport    => $buildslave_port,
         source   => $buildslave_source_v6,
+        tag      => 'default',
     }
 }
 
