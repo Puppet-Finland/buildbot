@@ -1,0 +1,4 @@
+check process buildbot-<%= @title %> with pidfile <%= @buildbot_basedir %>/<%= @title %>/twistd.pid
+    start "<%= @buildbot_executable %> start <%= @buildbot_basedir %>/<%= @title %>"
+    stop "<%= @buildbot_executable %> stop <%= @buildbot_basedir %>/<%= @title %>"
+

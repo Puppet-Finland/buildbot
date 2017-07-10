@@ -1,4 +1,0 @@
-check process buildslave-<%= @title %> with pidfile <%= scope['buildbot::params::buildslave_basedir'] %>/<%= @title %>/twistd.pid
-    start "<%= scope['buildbot::params::buildslave_executable'] %> start <%= scope['buildbot::params::buildslave_basedir'] %>/<%= @title %>"
-    stop "<%= scope['buildbot::params::buildslave_executable'] %> stop <%= scope['buildbot::params::buildslave_basedir'] %>/<%= @title %>"
-

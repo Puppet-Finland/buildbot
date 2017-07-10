@@ -8,6 +8,8 @@
 # [*manage*]
 #   Whether to manage buildslaves with Puppet or not. Valid values are true
 #   (default) and false.
+# [*manage_monit*]
+#   Manage monit rules. Valid values are true (default) and false.
 # [*buildmaster_address*]
 #   The IP-address of the buildmaster server the slave connects to. Defaults to 
 #   $::buildbot::default_buildmaster_address.
@@ -40,10 +42,6 @@
 #   defaults file to distinguish between settings of different slaves. Defaults 
 #   to 0.
 #
-# == Examples
-#
-#   include buildbot
-#
 # == Authors
 #
 # Samuli Seppänen <samuli.seppanen@gmail.com>
@@ -56,16 +54,17 @@
 #
 define buildbot::slave
 (
-    $buildslave_remote_name,
-    $buildslave_password,
-    $buildslave_local_name,
-    $manage = true,
-    $buildmaster_address = undef,
-    $buildmaster_port = undef,
-    $buildbot_user = undef,
-    $admin = undef,
-    $email = undef,
-    $index = 0
+            $buildslave_remote_name,
+            $buildslave_password,
+            $buildslave_local_name,
+    Boolean $manage = true,
+    Boolean $manage_monit = true,
+            $buildmaster_address = undef,
+            $buildmaster_port = undef,
+            $buildbot_user = undef,
+            $admin = undef,
+            $email = undef,
+            $index = 0
 )
 {
 
@@ -110,8 +109,8 @@ if $manage {
         }
     }
 
-    if tagged('monit') {
-        buildbot::monit::slave { $buildslave_local_name: }
+    if $manage_monit {
+        buildbot::monit { $buildslave_local_name: }
     }
 
 }

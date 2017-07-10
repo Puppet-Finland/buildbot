@@ -11,6 +11,8 @@
 #
 # [*manage*]
 #   Manage Buildmasters with Puppet. Valid values are true (default) and false.
+# [*manage_monit*]
+#   Manage monit rules. Valid values are true (default) and false.
 # [*manage_packetfilter*]
 #   Manage packet filtering rules. Valid values are true (default) and false.
 # [*title*]
@@ -48,6 +50,7 @@ define buildbot::master
 (
             $index,
     Boolean $manage = true,
+    Boolean $manage_monit = true,
     Boolean $manage_packetfilter = true,
             $webui_port = 8010,
             $buildslave_port = 9989,
@@ -77,6 +80,12 @@ if $manage {
     if $::osfamily == 'Debian' {
         buildbot::config::master::debian { $title:
             index => $index,
+        }
+    }
+
+    if $manage_monit {
+        buildbot::monit { $title:
+            type => 'master',
         }
     }
 
