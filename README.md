@@ -2,9 +2,16 @@
 
 A Puppet module for managing buildbot
 
+Tested operating systems are listed in metadata.json, but it is likely that more 
+recent Debian and Fedora versions work as well or with minor modifications. Note 
+that Fedora 24 does not have a unit file for starting buildslaves, but you 
+can work around that issue by simply including the 
+[Puppet-Finland/monit](https://github.com/Puppet-Finland/puppet-monit) class 
+which will ensure that buildbot is always running.
+
 # Module usage
 
-Setting up buildslaves is fairly easy using Hiera. First setup some sane 
+Setting up buildslaves is fairly easy using Hiera. First setup some sane
 defaults (e.g. in common.yaml):
 
     buildbot::default_buildmaster_address: '10.10.50.50'
@@ -30,31 +37,3 @@ these classes and defines:
 * [Class: buildbot](manifests/init.pp)
 * [Define: buildbot::master](manifests/master.pp)
 * [Define: buildbot::slave](manifests/slave.pp)
-
-# Dependencies
-
-See [metadata.json](metadata.json).
-
-# Operating system support
-
-This module has been tested on
-
-* Debian 7
-* Ubuntu 12.04
-* Ubuntu 14.04
-* Ubuntu 16.04
-* Fedora 24
-
-Fedora 24 does not have a unit file for starting buildslaves, but you can work 
-around that issue by including 
-[Puppet-Finland/monit](https://github.com/Puppet-Finland/monit):
-
-    classes:
-        - monit
-
-It should work with minor modifications on any Debian/Ubuntu derivative. Adding 
-support for other *NIX-like operating systems would be slightly more challenging 
-due to the way how buildmasters and buildslaves are configured on Debian/Ubuntu.
-
-For details see [params.pp](manifests/params.pp).
-
