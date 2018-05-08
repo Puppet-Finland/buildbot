@@ -2,13 +2,53 @@
   "name": "puppetfinland-buildbot",
   "version": "2.1.0",
   "author": "Puppet-Finland team",
-  "license": "BSD-2-Clause",
   "summary": "Setup buildbot masters and slaves",
-  "source": "https://github.com/Puppet-Finland/buildbot.git",
-  "project_page": "https://github.com/Puppet-Finland/buildbot",
+  "license": "BSD-2-Clause",
+  "source": "https://github.com/Puppet-Finland/puppet-buildbot.git",
+  "project_page": "https://github.com/Puppet-Finland/puppet-buildbot",
   "dependencies": [
-    { "name": "puppetfinland/monit", "version_requirement": ">= 0.5.0" },
-    { "name": "puppetfinland/packetfilter", "version_requirement": ">= 0.5.0" },
-    { "name": "puppetfinland/os", "version_requirement": ">= 0.5.6" }
-  ]
+    {
+      "name": "puppetfinland/monit",
+      "version_requirement": ">= 0.5.0"
+    },
+    {
+      "name": "puppetfinland/packetfilter",
+      "version_requirement": ">= 0.5.0"
+    },
+    {
+      "name": "puppetfinland/os",
+      "version_requirement": ">= 0.5.6"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Fedora",
+      "operatingsystemrelease": [
+        "24"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "12.04",
+        "14.04",
+        "16.04"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.7.0 < 6.0.0"
+    }
+  ],
+  "pdk-version": "1.4.1",
+  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git",
+  "template-ref": "1.4.1-0-g52adbbb"
 }
