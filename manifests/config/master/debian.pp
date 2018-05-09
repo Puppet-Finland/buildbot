@@ -15,42 +15,42 @@ define buildbot::config::master::debian
 
     augeas { "buildbot-${title}-${index}-MASTER_ENABLED":
         context => "/files${default_file}",
-        changes => "set MASTER_ENABLED\[${index}\] 1",
+        changes => "set MASTER_ENABLED\\[${index}\\] 1",
         lens    => 'Shellvars.lns',
         incl    => $default_file,
     }
 
     augeas { "buildbot-${title}-${index}-MASTER_NAME":
         context => "/files${default_file}",
-        changes => "set MASTER_NAME\[${index}\] ${title}",
+        changes => "set MASTER_NAME\\[${index}\\] ${title}",
         lens    => 'Shellvars.lns',
         incl    => $default_file,
     }
 
     augeas { "buildbot-${title}-${index}-MASTER_USER":
         context => "/files${default_file}",
-        changes => "set MASTER_USER\[${index}\] buildbot",
+        changes => "set MASTER_USER\\[${index}\\] buildbot",
         lens    => 'Shellvars.lns',
         incl    => $default_file,
     }
 
     augeas { "buildbot-${title}-${index}-MASTER_BASEDIR":
         context => "/files${default_file}",
-        changes => "set MASTER_BASEDIR\[${index}\] ${::buildbot::params::buildmaster_basedir}/${title}",
+        changes => "set MASTER_BASEDIR\\[${index}\\] ${::buildbot::params::buildmaster_basedir}/${title}",
         lens    => 'Shellvars.lns',
         incl    => $default_file,
     }
 
     augeas { "buildbot-${title}-${index}-MASTER_OPTIONS":
         context => "/files${default_file}",
-        changes => "set MASTER_OPTIONS\[${index}\] \"\"",
+        changes => "set MASTER_OPTIONS\\[${index}\\] \"\"",
         lens    => 'Shellvars.lns',
         incl    => $default_file,
     }
 
     augeas { "buildbot-${title}-${index}-MASTER_PREFIXCMD":
         context => "/files${default_file}",
-        changes => "set MASTER_PREFIXCMD\[${index}\] \"\"",
+        changes => "set MASTER_PREFIXCMD\\[${index}\\] \"\"",
         lens    => 'Shellvars.lns',
         incl    => $default_file,
     }
