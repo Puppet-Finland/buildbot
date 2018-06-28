@@ -35,6 +35,31 @@ define buildbot::config::slave
         user    => $run_as_user,
     }
 
+    # Ensure that buildbot.tac is updated in case slave parameters change
+    $buildbot_tac = "${buildslave_dir}/buildbot.tac"
+    $buildbot_tac_params = {'buildmaster_host' => "\'${buildmaster_address}\'",
+                            'port'             => $buildmaster_port,
+                            'slavename'        => "\'${buildslave_remote_name}\'",
+                            'passwd'           => "\'${buildslave_password}\'", }
+
+    # We can only notify the buildbot service on certain operating systems
+    $notify_service = $::osfamily ? {
+        'Debian' => Class['::buildbot::service::slave::debian'],
+        default  => undef,
+    }
+
+    # Loop through the defined parameters and change them as necessary
+    $buildbot_tac_params.each |$param| {
+        file_line { "buildbot-${param[0]}":
+            ensure  => 'present',
+            line    => "${param[0]} = ${param[1]}",
+            match   => "^${param[0]}",
+            path    => $buildbot_tac,
+            notify  => $notify_service,
+            require => Exec["buildbot-${buildslave_local_name}-create-slave"],
+        }
+    }
+
     file { "buildbot-${buildslave_local_name}-admin":
         name    => "${buildslave_dir}/info/admin",
         content => "${admin} <${email}>",

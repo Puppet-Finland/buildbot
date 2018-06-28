@@ -87,7 +87,7 @@ if $manage {
         $run_as_user = $::buildbot::params::buildbot_user
     }
 
-    buildbot::config::slave { "${buildslave_local_name}-config":
+    ::buildbot::config::slave { "${buildslave_local_name}-config":
         buildmaster_address    => $l_buildmaster_address,
         buildmaster_port       => $l_buildmaster_port,
         buildslave_remote_name => $buildslave_remote_name,
@@ -103,7 +103,7 @@ if $manage {
         # Enable buildbot on boot
         include ::buildbot::service::slave::debian
 
-        buildbot::config::slave::debian { $buildslave_local_name:
+        ::buildbot::config::slave::debian { $buildslave_local_name:
             index       => $index,
             run_as_user => $run_as_user,
         }
