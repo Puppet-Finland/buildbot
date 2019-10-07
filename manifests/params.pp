@@ -42,7 +42,7 @@ class buildbot::params {
             $package_provider = 'pip'
             $buildslave_executable = '/usr/local/bin/buildslave'
         }
-        'TwentyNine': {
+        /(TwentyNine|Thirty)/: {
             $package_provider = 'pip'
             $buildslave_executable = '/usr/bin/buildslave'
         }
